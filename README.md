@@ -1,4 +1,6 @@
 # API Server for SlackDiagram
+## Database
+Please refer to `slackdata.mwb`.
 ## Configuration
 Create **config.properties** in root directory:
 ```properties
