@@ -41,7 +41,10 @@ public class AllUserController {
             obj.put("message", e.getMessage());
             e.printStackTrace();
         }
-        return obj.toString();
+        JSONObject father = new JSONObject();
+        father.put("code", 20000);
+        father.put("data", obj);
+        return father.toString();
     }
 
 }
