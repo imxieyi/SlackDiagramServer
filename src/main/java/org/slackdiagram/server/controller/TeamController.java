@@ -31,7 +31,7 @@ public class TeamController {
             obj.put("status", 0);
         } catch (Exception e) {
             obj.put("status", 1);
-            obj.put("message", e.getMessage());
+            obj.put("error", e.getMessage());
             e.printStackTrace();
         }
         JSONObject father = new JSONObject();

@@ -24,11 +24,11 @@ public class ChannelController {
         try {
             if(team == null || team.length() <= 0) {
                 obj.put("status", 2);
-                obj.put("message", "Illegal request!");
+                obj.put("error", "Illegal request!");
             } else if(!Team.check(team)) {
                 // Team does not exist
                 obj.put("status", 3);
-                obj.put("message", "Team does not exist!");
+                obj.put("error", "Team does not exist!");
             } else {
                 for (Channel t : Channel.all(team, true)) {
                     obj.append("channel", t.toJSON());
@@ -41,7 +41,7 @@ public class ChannelController {
             }
         } catch (Exception e) {
             obj.put("status", 1);
-            obj.put("message", e.getMessage());
+            obj.put("error", e.getMessage());
             e.printStackTrace();
         }
         JSONObject father = new JSONObject();

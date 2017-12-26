@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slackdiagram.server.model.Channel;
-import org.slackdiagram.server.model.MentionCount;
+import org.slackdiagram.server.model.MessageCount;
 import org.slackdiagram.server.model.Team;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/api/mention")
-public class MentionController {
+@RequestMapping("/api/message/count")
+public class MessageCountController {
 
-    private Logger log = Logger.getLogger(MentionController.class.getName());
+    private Logger log = Logger.getLogger(MessageCountController.class.getName());
 
     @RequestMapping(method = RequestMethod.GET)
     public String get(HttpServletRequest req) {
@@ -37,14 +37,15 @@ public class MentionController {
                 if(channel != null && channel.length() > 0 && !Channel.check(team, channel)) {
                     obj.put("status", 4);
                     obj.put("error", "Channel does not exist!");
+                } else {
+                    for (MessageCount mc : MessageCount.range(team, channel, Long.parseLong(from), Long.parseLong(to))) {
+                        obj.append("message", mc.toJSON());
+                    }
+                    if (!obj.has("message")) {
+                        obj.put("message", new JSONArray());
+                    }
+                    obj.put("status", 0);
                 }
-                for (MentionCount mc : MentionCount.range(team, channel, Long.parseLong(from), Long.parseLong(to))) {
-                    obj.append("mention", mc.toJSON());
-                }
-                if (!obj.has("mention")) {
-                    obj.put("mention", new JSONArray());
-                }
-                obj.put("status", 0);
             }
         } catch (Exception e) {
             obj.put("status", 1);

@@ -12,22 +12,39 @@ db_password=123456
 ```
 ## Usage
 ### Team
-Get all available teams:
+**Get all available teams:**
 `/api/team`
 
-Query a team by domain:
+**Query a team by domain:**
 `/api/team?domain={TEAM_DOMAIN}`
 
 ### Channel
-Get all available channels of a team:
+**Get all available channels of a team:**
 `/api/channel?team={TEAM_ID}`
 
 ### User
-Get all users of a team:
+**Get all users of a team:**
 `/api/user/all?team={TEAM_ID}`
 
 ### Mention
-Get the statistics of mentions within a date range:
+**Get the statistics of mentions within a date range:**
 `/api/mention?team={TEAM_ID}&channel={CHANNEL_ID}&from={FROM_TIME}&to={TO_TIME}`
 
-Note that `channel` is optional. Times are in Unix epoch format with unit `second`.
+Channel is optional.
+
+### Message
+**Get count of messages by all participants.**
+`/api/message/count?team={TEAM_ID}&channel={CHANNEL_ID}&from={FROM_TIME}&to={TO_TIME}`
+
+Channel is optional.
+
+**Get messages within a time range (ordered by time, the most recent first):**
+`/api/message?team={TEAM_ID}&channel={CHANNEL_ID}&from={FROM_TIME}&to={TO_TIME}&length={LENGTH}&offset={OFFSET}`
+
+`length` and `offset` are used to limit output.
+The default value of `offset` is 0.
+If `length` is not specified, no message will be returned.
+Both `from` and `to` are optional.
+Count of messages are also returned even if `length` and `offset` are missing.
+
+Note that times are in Unix epoch format with unit `second`.
