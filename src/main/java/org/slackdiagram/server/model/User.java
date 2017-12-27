@@ -67,7 +67,7 @@ public class User {
     }
 
     public JSONObject toJSON() {
-        return new JSONObject(this, new String[]{"name", "color", "first_name", "last_name", "real_name", "title"});
+        return new JSONObject(this, new String[]{"name", "color", "first_name", "last_name", "real_name", "title", "image"});
     }
 
     @Override
