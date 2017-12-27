@@ -14,10 +14,11 @@ public class MessageCount {
 
     public static ArrayList<MessageCount> range(String team, String channel, long from, long to) {
         ArrayList<MessageCount> result = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stat = null;
         try {
-            Connection conn = DBHelper.getConnection();
+            conn = DBHelper.getConnection();
             String sql;
-            PreparedStatement stat;
             if(channel != null && channel.length() > 0) {
                 sql = "select user, count(*) cnt from message where " +
                         "team = ? and channel = ? and " +
@@ -46,6 +47,8 @@ public class MessageCount {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBHelper.close(conn, stat);
         }
         return result;
     }

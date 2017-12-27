@@ -1,7 +1,9 @@
 package org.slackdiagram.server.model;
 
+import ch.qos.logback.core.db.dialect.DBUtil;
 import org.json.JSONObject;
 import org.slackdiagram.server.util.DBHelper;
+import sun.nio.cs.ext.DoubleByte;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,10 +17,11 @@ public class LiteMessage {
 
     public static ArrayList<LiteMessage> range(String team, String channel, long from, long to, int length, int offset) {
         ArrayList<LiteMessage> result = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stat = null;
         try {
-            Connection conn = DBHelper.getConnection();
+            conn = DBHelper.getConnection();
             String sql;
-            PreparedStatement stat;
             sql = "select timestamp, user, text from message where " +
                     "team = ? and channel = ? and " +
                     "timestamp >= date_add('1970-01-01', interval ? second) and timestamp <= date_add('1970-01-01', interval ? second) " +
@@ -40,6 +43,8 @@ public class LiteMessage {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBHelper.close(conn, stat);
         }
         return result;
     }

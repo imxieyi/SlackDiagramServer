@@ -1,5 +1,6 @@
 package org.slackdiagram.server.model;
 
+import ch.qos.logback.core.db.dialect.DBUtil;
 import org.json.JSONObject;
 import org.slackdiagram.server.util.DBHelper;
 
@@ -23,15 +24,17 @@ public class Channel {
 
     public static ArrayList<Channel> all(String team, boolean available) {
         ArrayList<Channel> result = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stat = null;
         try {
-            Connection conn = DBHelper.getConnection();
+            conn = DBHelper.getConnection();
             String sql;
             if(available) {
                 sql = "select * from channel c join (select distinct channel from mention where team = ?) cc on c.id = cc.channel";
             } else {
                 sql = "select * from channel where team = ?";
             }
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
             stat.setString(1, team);
             ResultSet rs = stat.executeQuery();
             while(rs.next()) {
@@ -54,15 +57,18 @@ public class Channel {
             conn.close();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBHelper.close(conn, stat);
         }
         return result;
     }
 
     public static boolean check(String team, String channel) {
+        Connection conn = null;
+        PreparedStatement stat = null;
         try {
-            Connection conn = DBHelper.getConnection();
+            conn = DBHelper.getConnection();
             String sql;
-            PreparedStatement stat;
             if(team != null && team.length() > 0 && channel != null && channel.length() > 0) {
                 sql = "select * from channel where team = ? and id = ?";
                 stat = conn.prepareStatement(sql);
@@ -74,17 +80,13 @@ public class Channel {
             }
             ResultSet rs = stat.executeQuery();
             if(rs.next()) {
-                rs.close();
-                stat.close();
-                conn.close();
+                DBHelper.close(conn, stat);
                 return true;
-            } else {
-                rs.close();
-                stat.close();
-                conn.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBHelper.close(conn, stat);
         }
         return false;
     }

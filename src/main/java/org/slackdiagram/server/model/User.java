@@ -35,10 +35,12 @@ public class User {
 
     public static ArrayList<User> all(String team) {
         ArrayList<User> result = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stat = null;
         try {
-            Connection conn = DBHelper.getConnection();
+            conn = DBHelper.getConnection();
             String sql = "select * from user where team = ?";
-            PreparedStatement stat = conn.prepareStatement(sql);
+            stat = conn.prepareStatement(sql);
             stat.setString(1, team);
             ResultSet rs = stat.executeQuery();
             while(rs.next()) {
@@ -49,7 +51,7 @@ public class User {
                 u.first_name = rs.getString("first_name");
                 u.last_name = rs.getString("last_name");
                 u.real_name = rs.getString("real_name");
-//                u.image = retrieveImage(rs, "48");
+                u.image = retrieveImage(rs, "48");
                 u.title = rs.getString("title");
                 result.add(u);
             }
@@ -58,6 +60,8 @@ public class User {
             conn.close();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBHelper.close(conn, stat);
         }
         return result;
     }

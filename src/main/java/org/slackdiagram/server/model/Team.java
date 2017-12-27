@@ -17,10 +17,11 @@ public class Team {
 
     public static ArrayList<Team> all(String domain, boolean available) {
         ArrayList<Team> result = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stat = null;
         try {
-            Connection conn = DBHelper.getConnection();
+           conn = DBHelper.getConnection();
             String sql;
-            PreparedStatement stat;
             if(domain != null && domain.length() > 0) {
                 sql = "select * from team where domain = ?";
                 stat = conn.prepareStatement(sql);
@@ -45,6 +46,8 @@ public class Team {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBHelper.close(conn, stat);
         }
         return result;
     }

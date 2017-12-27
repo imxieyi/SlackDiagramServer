@@ -1,5 +1,6 @@
 package org.slackdiagram.server.util;
 
+import com.mysql.cj.api.mysqla.result.Resultset;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -8,6 +9,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 public class DBHelper {
@@ -42,6 +45,22 @@ public class DBHelper {
     public static Connection getConnection() throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection(url, user, password);
+    }
+
+    public static void close(Connection conn, Statement stat) {
+        try {
+            if(stat != null && !stat.isClosed()) {
+                stat.close();
+            }
+        } catch (SQLException ignored) {
+        } finally {
+            try {
+                if(conn != null && !conn.isClosed()) {
+                    conn.close();
+                }
+            } catch (SQLException ignored) {
+            }
+        }
     }
 
 }
