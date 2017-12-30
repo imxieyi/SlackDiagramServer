@@ -1,6 +1,5 @@
 package org.slackdiagram.server.util;
 
-import com.mysql.cj.api.mysqla.result.Resultset;
 import org.apache.log4j.Logger;
 
 import java.io.File;

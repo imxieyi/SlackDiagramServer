@@ -5,7 +5,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slackdiagram.server.model.Channel;
 import org.slackdiagram.server.model.LiteMessage;
-import org.slackdiagram.server.model.MessageCount;
 import org.slackdiagram.server.model.Team;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

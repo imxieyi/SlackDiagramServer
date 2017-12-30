@@ -1,9 +1,7 @@
 package org.slackdiagram.server.model;
 
-import ch.qos.logback.core.db.dialect.DBUtil;
 import org.json.JSONObject;
 import org.slackdiagram.server.util.DBHelper;
-import sun.nio.cs.ext.DoubleByte;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,6 +1,5 @@
 package org.slackdiagram.server.model;
 
-import ch.qos.logback.core.db.dialect.DBUtil;
 import org.json.JSONObject;
 import org.slackdiagram.server.util.DBHelper;
 
