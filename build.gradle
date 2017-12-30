@@ -32,8 +32,9 @@ dependencies {
     compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
     compile("org.springframework.boot:spring-boot-starter-web")
 	compile('org.springframework.boot:spring-boot-starter')
+	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-zuul
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-zuul', version: '1.4.0.RELEASE'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-
 }
 
 jar {
