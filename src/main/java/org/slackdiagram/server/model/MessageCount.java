@@ -53,6 +53,42 @@ public class MessageCount {
         return result;
     }
 
+    public static JSONObject user(String team, String channel, String user) {
+        JSONObject result = new JSONObject();
+        Connection conn = null;
+        PreparedStatement stat = null;
+        try {
+            conn = DBHelper.getConnection();
+            String sql;
+            if(channel != null && channel.length() > 0) {
+                sql = "select year(timestamp) y, month(timestamp) m, day(timestamp) d, count(*) cnt from message where " +
+                        "team = ? and channel = ? and user = ? " +
+                        "group by y, m, d";
+                stat = conn.prepareStatement(sql);
+                stat.setString(1, team);
+                stat.setString(2, channel);
+                stat.setString(3, user);
+            } else {
+                sql = "select year(timestamp) y, month(timestamp) m, day(timestamp) d, count(*) cnt from message where " +
+                        "team = ? and user = ? " +
+                        "group by y, m, d";
+                stat = conn.prepareStatement(sql);
+                stat.setString(1, team);
+                stat.setString(2, user);
+            }
+            ResultSet rs = stat.executeQuery();
+            while(rs.next()) {
+                String date = String.format("%d-%02d-%02d", rs.getInt("y"), rs.getInt("m"), rs.getInt("d"));
+                result.put(date, rs.getInt("cnt"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBHelper.close(conn, stat);
+        }
+        return result;
+    }
+
     public JSONObject toJSON() {
         return new JSONObject(this, new String[]{"user", "count"});
     }

@@ -1,6 +1,7 @@
 package org.slackdiagram.server.controller;
 
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -45,7 +46,7 @@ public class AnalysisController {
         String uri = req.getRequestURI();
         try {
             uri = uri.replaceAll("/api/analysis/", getAnalysisURL());
-            log.info("mapped url: " + uri);
+            log.debug("mapped url: " + uri);
             try {
                 String analysis = Jsoup.connect(uri).get().text();
                 if(analysis.length() <= 0) {
@@ -53,11 +54,17 @@ public class AnalysisController {
                     ret.put("error", "No data returned from analysis API server.");
                 }
                 try {
-                    ret.put("data", analysis);
-                    ret.put("code", 20000);
+                    JSONObject a = new JSONObject(analysis);
+                    ret.put("data", a);
                 } catch (JSONException e) {
-                    ret.put("code", 503);
-                    ret.put("error", "Error parsing data from analysis API server.");
+                    try {
+                        JSONArray arr = new JSONArray(analysis);
+                        ret.put("data", arr);
+                    } catch (JSONException ee) {
+                        ret.put("data", analysis);
+                    }
+                } finally {
+                    ret.put("code", 20000);
                 }
             } catch (IOException e) {
                 ret.put("code", 503);

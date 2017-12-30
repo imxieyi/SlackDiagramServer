@@ -66,6 +66,33 @@ public class User {
         return result;
     }
 
+    public static boolean check(String user) {
+        Connection conn = null;
+        PreparedStatement stat = null;
+        try {
+            conn = DBHelper.getConnection();
+            String sql;
+            if(user != null && user.length() > 0) {
+                sql = "select * from user where id = ?";
+                stat = conn.prepareStatement(sql);
+                stat.setString(1, user);
+            } else {
+                conn.close();
+                return false;
+            }
+            ResultSet rs = stat.executeQuery();
+            if(rs.next()) {
+                DBHelper.close(conn, stat);
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBHelper.close(conn, stat);
+        }
+        return false;
+    }
+
     public JSONObject toJSON() {
         return new JSONObject(this, new String[]{"name", "color", "first_name", "last_name", "real_name", "title", "image"});
     }

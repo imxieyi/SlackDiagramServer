@@ -33,8 +33,13 @@ db_password=123456
 Channel is optional.
 
 ### Message
-**Get count of messages by all participants.**
+**Get count of messages by all participants:**
 `/api/message/count?team={TEAM_ID}&channel={CHANNEL_ID}&from={FROM_TIME}&to={TO_TIME}`
+
+Channel is optional.
+
+**Get count of messages by a specific user:**
+`/api/message/byuser?team={TEAM_ID}&channel={CHANNEL_ID}&user={USER_ID}`
 
 Channel is optional.
 
