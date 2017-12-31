@@ -23,8 +23,10 @@ db_password=123456
 `/api/channel?team={TEAM_ID}`
 
 ### User
-**Get all users of a team:**
-`/api/user/all?team={TEAM_ID}`
+**Get all users of a channel:**
+`/api/user/all?team={TEAM_ID}&channel={CHANNEL_ID}`
+
+Channel is optional.
 
 ### Mention
 **Get the statistics of mentions within a date range:**
