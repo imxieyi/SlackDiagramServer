@@ -37,7 +37,7 @@ public class PersonMessageController {
                     obj.put("error", "Channel does not exist!");
                 } else {
                     if(!User.check(user)) {
-                        obj.put("status", 4);
+                        obj.put("code", 400);
                         obj.put("error", "User does not exist!");
                     } else {
                         obj.put("data", MessageCount.user(team, channel, user));
@@ -48,7 +48,6 @@ public class PersonMessageController {
         } catch (Exception e) {
             obj.put("code", 500);
             obj.put("error", e.getMessage());
-            e.printStackTrace();
         }
         return obj.toString();
     }

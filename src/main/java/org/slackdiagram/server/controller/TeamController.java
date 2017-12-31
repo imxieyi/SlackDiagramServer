@@ -22,22 +22,19 @@ public class TeamController {
         String domain = req.getParameter("domain");
         try {
             for (Team t : Team.all(domain, true)) {
-                obj.append("team", t.toJSON());
+                obj.append("data", t.toJSON());
             }
-            if(!obj.has("team")) {
+            if(!obj.has("data")) {
                 // No team found
-                obj.put("team", new JSONArray());
+                obj.put("data", new JSONArray());
             }
-            obj.put("status", 0);
+            obj.put("code", 20000);
         } catch (Exception e) {
-            obj.put("status", 1);
+            obj.put("code", 500);
             obj.put("error", e.getMessage());
             e.printStackTrace();
         }
-        JSONObject father = new JSONObject();
-        father.put("code", 20000);
-        father.put("data", obj);
-        return father.toString();
+        return obj.toString();
     }
 
 }

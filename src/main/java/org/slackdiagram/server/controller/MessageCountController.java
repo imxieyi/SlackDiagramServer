@@ -27,35 +27,32 @@ public class MessageCountController {
         String to = req.getParameter("to");
         try {
             if(team == null || team.length() <= 0 || from == null || from.length() <=0 || to == null || to.length() <= 0) {
-                obj.put("status", 2);
+                obj.put("code", 400);
                 obj.put("error", "Illegal request!");
             } else if(!Team.check(team)) {
                 // Team does not exist
-                obj.put("status", 3);
+                obj.put("code", 400);
                 obj.put("error", "Team does not exist!");
             } else {
                 if(channel != null && channel.length() > 0 && !Channel.check(team, channel)) {
-                    obj.put("status", 4);
+                    obj.put("code", 400);
                     obj.put("error", "Channel does not exist!");
                 } else {
                     for (MessageCount mc : MessageCount.range(team, channel, Long.parseLong(from), Long.parseLong(to))) {
-                        obj.append("message", mc.toJSON());
+                        obj.append("data", mc.toJSON());
                     }
-                    if (!obj.has("message")) {
-                        obj.put("message", new JSONArray());
+                    if (!obj.has("data")) {
+                        obj.put("data", new JSONArray());
                     }
-                    obj.put("status", 0);
+                    obj.put("code", 20000);
                 }
             }
         } catch (Exception e) {
-            obj.put("status", 1);
+            obj.put("code", 500);
             obj.put("error", e.getMessage());
             e.printStackTrace();
         }
-        JSONObject father = new JSONObject();
-        father.put("code", 20000);
-        father.put("data", obj);
-        return father.toString();
+        return obj.toString();
     }
 
 }

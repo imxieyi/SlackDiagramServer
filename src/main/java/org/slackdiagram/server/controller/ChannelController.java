@@ -23,31 +23,28 @@ public class ChannelController {
         String team = req.getParameter("team");
         try {
             if(team == null || team.length() <= 0) {
-                obj.put("status", 2);
+                obj.put("code", 400);
                 obj.put("error", "Illegal request!");
             } else if(!Team.check(team)) {
                 // Team does not exist
-                obj.put("status", 3);
+                obj.put("code", 400);
                 obj.put("error", "Team does not exist!");
             } else {
                 for (Channel t : Channel.all(team, true)) {
-                    obj.append("channel", t.toJSON());
+                    obj.append("data", t.toJSON());
                 }
-                if (!obj.has("channel")) {
+                if (!obj.has("data")) {
                     // No channel found
-                    obj.put("channel", new JSONArray());
+                    obj.put("data", new JSONArray());
                 }
-                obj.put("status", 0);
+                obj.put("code", 20000);
             }
         } catch (Exception e) {
-            obj.put("status", 1);
+            obj.put("code", 500);
             obj.put("error", e.getMessage());
             e.printStackTrace();
         }
-        JSONObject father = new JSONObject();
-        father.put("code", 20000);
-        father.put("data", obj);
-        return father.toString();
+        return obj.toString();
     }
 
 }

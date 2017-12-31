@@ -30,15 +30,15 @@ public class MessageController {
         String offset = req.getParameter("offset");
         try {
             if(team == null || team.length() <= 0 || channel == null || channel.length() <= 0) {
-                obj.put("status", 2);
+                obj.put("code", 400);
                 obj.put("error", "Illegal request!");
             } else if(!Team.check(team)) {
                 // Team does not exist
-                obj.put("status", 3);
+                obj.put("code", 400);
                 obj.put("error", "Team does not exist!");
             } else {
                 if(channel != null && channel.length() > 0 && !Channel.check(team, channel)) {
-                    obj.put("status", 4);
+                    obj.put("code", 400);
                     obj.put("error", "Channel does not exist!");
                 } else {
                     long fromTime, toTime;
@@ -52,30 +52,29 @@ public class MessageController {
                     } else {
                         toTime = new Date().getTime() / 1000;
                     }
+                    JSONObject lmobj = new JSONObject();
                     if(length != null && length.length() > 0){
                         if (offset == null) {
                             offset = "0";
                         }
                         for (LiteMessage lm : LiteMessage.range(team, channel, fromTime, toTime, Integer.parseInt(length), Integer.parseInt(offset))) {
-                            obj.append("message", lm.toJSON());
-                        }
-                        if (!obj.has("message")) {
-                            obj.put("message", new JSONArray());
+                            lmobj.append("message", lm.toJSON());
                         }
                     }
-                    obj.put("total", LiteMessage.count(team, channel, fromTime, toTime));
-                    obj.put("status", 0);
+                    if (!lmobj.has("message")) {
+                        lmobj.put("message", new JSONArray());
+                    }
+                    lmobj.put("total", LiteMessage.count(team, channel, fromTime, toTime));
+                    obj.put("data", lmobj);
+                    obj.put("code", 20000);
                 }
             }
         } catch (Exception e) {
-            obj.put("status", 1);
+            obj.put("code", 500);
             obj.put("error", e.getMessage());
             e.printStackTrace();
         }
-        JSONObject father = new JSONObject();
-        father.put("code", 20000);
-        father.put("data", obj);
-        return father.toString();
+        return obj.toString();
     }
 
 }

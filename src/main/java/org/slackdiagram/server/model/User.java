@@ -33,15 +33,27 @@ public class User {
         return "";
     }
 
-    public static ArrayList<User> all(String team) {
+    public static ArrayList<User> get(String team, String channel) {
         ArrayList<User> result = new ArrayList<>();
         Connection conn = null;
         PreparedStatement stat = null;
         try {
             conn = DBHelper.getConnection();
-            String sql = "select * from user where team = ?";
-            stat = conn.prepareStatement(sql);
-            stat.setString(1, team);
+            String sql;
+            if(channel != null && channel.length() > 0) {
+                sql = "select * from user u join ( " +
+                        "select distinct user from message where team = ? and channel = ?) cu " +
+                        "on cu.user = u.id";
+                stat = conn.prepareStatement(sql);
+                stat.setString(1, team);
+                stat.setString(2, channel);
+            } else {
+                sql = "select * from user u join ( " +
+                        "select distinct user from message where team = ?) cu " +
+                        "on cu.user = u.id";
+                stat = conn.prepareStatement(sql);
+                stat.setString(1, team);
+            }
             ResultSet rs = stat.executeQuery();
             while(rs.next()) {
                 User u = new User();
