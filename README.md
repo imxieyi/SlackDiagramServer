@@ -40,6 +40,11 @@ Channel is optional.
 
 Channel is optional.
 
+**Get messages of mentions with a pair of users:**
+`/api/mention/message?team={TEAM_ID}&channel={CHANNEL_ID}&from={FROM_TIME}&to={TO_TIME}&user1={USER_ID}&user2={ANOTHER_USER_ID}`
+
+Channel is optional.
+
 ### Message
 **Get count of messages by all participants:**
 `/api/message/count?team={TEAM_ID}&channel={CHANNEL_ID}&from={FROM_TIME}&to={TO_TIME}`
