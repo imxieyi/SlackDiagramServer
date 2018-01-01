@@ -22,6 +22,12 @@ db_password=123456
 **Get all available channels of a team:**
 `/api/channel?team={TEAM_ID}`
 
+**Get basic statistics of a team or channel:**
+`/api/channel/info?team={TEAM_ID}&channel={CHANNEL_ID}&from={FROM_TIME}&to={TO_TIME}`
+
+Channel is optional.
+Note that `earliest message` is independent from given time range.
+
 ### User
 **Get all users of a channel:**
 `/api/user/all?team={TEAM_ID}&channel={CHANNEL_ID}`
