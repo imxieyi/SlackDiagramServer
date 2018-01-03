@@ -34,14 +34,29 @@ Note that `earliest message` is independent from given time range.
 
 Channel is optional.
 
+**Get messages of a user within a time range:**
+`/api/user/message?team={TEAM_ID}&channel={CHANNEL_ID}&user={USER_ID}&from={FROM_TIME}&to={TO_TIME}&length={LENGTH}&offset={OFFSET}`
+
+Channel, length, offset are optional.
+
+**Get days after a user send the first message in a channel:**
+`/api/user/joindays?team={TEAM_ID}&channel={CHANNEL_ID}&user={USER_ID}`
+
+Channel is optional.
+
 ### Mention
-**Get the statistics of mentions within a date range:**
+**Get the statistics of mentions within a time range:**
 `/api/mention?team={TEAM_ID}&channel={CHANNEL_ID}&from={FROM_TIME}&to={TO_TIME}`
 
 Channel is optional.
 
 **Get messages of mentions with a pair of users:**
 `/api/mention/message?team={TEAM_ID}&channel={CHANNEL_ID}&from={FROM_TIME}&to={TO_TIME}&user1={USER_ID}&user2={ANOTHER_USER_ID}`
+
+Channel is optional.
+
+**Get days after two users mention each other for the first time in a channel:**
+`/api/mention/meetdays?team={TEAM_ID}&channel={CHANNEL_ID}&user1={USER_ID}&user2={ANOTHER_USER_ID}`
 
 Channel is optional.
 

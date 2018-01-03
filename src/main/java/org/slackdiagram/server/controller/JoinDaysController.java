@@ -1,21 +1,22 @@
 package org.slackdiagram.server.controller;
 
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slackdiagram.server.model.*;
+import org.slackdiagram.server.model.Channel;
+import org.slackdiagram.server.model.MessageCount;
+import org.slackdiagram.server.model.Team;
+import org.slackdiagram.server.model.User;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 
 @RestController
-@RequestMapping("/api/message/byuser")
-public class PersonMessageController {
+@RequestMapping("/api/user/joindays")
+public class JoinDaysController {
 
-    private Logger log = Logger.getLogger(PersonMessageController.class.getName());
+    private Logger log = Logger.getLogger(JoinDaysController.class.getName());
 
     @RequestMapping(method = RequestMethod.GET)
     public String get(HttpServletRequest req) {
@@ -40,7 +41,7 @@ public class PersonMessageController {
                         obj.put("code", 400);
                         obj.put("error", "User does not exist!");
                     } else {
-                        obj.put("data", MessageCount.user(team, channel, user));
+                        obj.put("data", User.joindays(team, channel, user));
                         obj.put("code", 20000);
                     }
                 }

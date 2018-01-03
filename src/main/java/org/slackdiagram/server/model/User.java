@@ -63,7 +63,7 @@ public class User {
                 u.first_name = rs.getString("first_name");
                 u.last_name = rs.getString("last_name");
                 u.real_name = rs.getString("real_name");
-                u.image = retrieveImage(rs, "48");
+                u.image = retrieveImage(rs, "192");
                 u.title = rs.getString("title");
                 result.add(u);
             }
@@ -103,6 +103,37 @@ public class User {
             DBHelper.close(conn, stat);
         }
         return false;
+    }
+
+    public static int joindays(String team, String channel, String user) {
+        int result = 0;
+        Connection conn = null;
+        PreparedStatement stat = null;
+        try {
+            conn = DBHelper.getConnection();
+            String sql;
+            if(channel != null && channel.length() > 0) {
+                sql = "select datediff(current_timestamp, min(timestamp)) diff from message where team = ? and channel = ? and user = ?";
+                stat = conn.prepareStatement(sql);
+                stat.setString(1, team);
+                stat.setString(2, channel);
+                stat.setString(3, user);
+            } else {
+                sql = "select datediff(current_timestamp, min(timestamp)) diff from message where team = ? and user = ?";
+                stat = conn.prepareStatement(sql);
+                stat.setString(1, team);
+                stat.setString(2, user);
+            }
+            ResultSet rs = stat.executeQuery();
+            if(rs.next()) {
+                result = rs.getInt("diff");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBHelper.close(conn, stat);
+        }
+        return result;
     }
 
     public JSONObject toJSON() {

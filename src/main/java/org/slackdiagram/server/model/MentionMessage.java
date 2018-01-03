@@ -35,7 +35,8 @@ public class MentionMessage {
                         "      TIMESTAMP >= date_add('1970-01-01', INTERVAL ? SECOND ) AND\n" +
                         "      TIMESTAMP <= date_add('1970-01-01', INTERVAL ? SECOND )) mt\n" +
                         "on ms.timestamp = mt.timestamp\n" +
-                        "where ms.team = ? and ms.channel = ? and ms.user = ?";
+                        "where ms.team = ? and ms.channel = ? and ms.user = ? " +
+                        "order by ms.timestamp desc";
                 stat = conn.prepareStatement(sql);
                 stat.setString(1, team);
                 stat.setString(2, channel);
@@ -54,7 +55,8 @@ public class MentionMessage {
                         "      TIMESTAMP >= date_add('1970-01-01', INTERVAL ? SECOND ) AND\n" +
                         "      TIMESTAMP <= date_add('1970-01-01', INTERVAL ? SECOND )) mt\n" +
                         "on ms.timestamp = mt.timestamp\n" +
-                        "where ms.team = ? and ms.user = ?";
+                        "where ms.team = ? and ms.user = ? " +
+                        "order by ms.timestamp desc";
                 stat = conn.prepareStatement(sql);
                 stat.setString(1, team);
                 stat.setString(2, fromuser);
