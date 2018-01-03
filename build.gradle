@@ -34,6 +34,12 @@ sourceSets {
 	}
 }
 
+processResources {
+    from ('front-end-dist/') {
+        into 'public'
+    }
+}
+
 dependencies {
     compile group: 'org.json', name: 'json', version: '20171018'
     compile group: 'org.springframework', name: 'spring-web'

@@ -30,3 +30,5 @@ nbdist/
 config.properties
 
 *.p12
+
+front-end-dist/
